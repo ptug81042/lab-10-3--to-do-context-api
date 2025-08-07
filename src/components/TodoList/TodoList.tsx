@@ -19,7 +19,7 @@ const TodoList: React.FC = () => {
             default:
                 return todos;    
         }
-    } [todos, filter])
+    }, [todos, filter])
 
     if (filteredTodos.length === 0) {
         return <p className={styles.empty}>No todos to display.</p>;
