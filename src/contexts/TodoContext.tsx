@@ -11,11 +11,11 @@ import { type Todo } from '../types'
 import { getFromStorage, saveToStorage } from '../utils/localStorage'
 
 // Action types for reducer
-type Action = 
+type Action =
     | { type: 'ADD_TODO'; text: string }
     | { type: 'TOGGLE_TODO'; id: string }
     | { type: 'DELETE_TODO'; id: string }
-    | { type: 'EDIT_TODO'; id: string; newText: string }
+    | { type: 'EDIT_TODO'; payload: { id: string; newText: string } }
     | { type: 'CLEAR_COMPLETED' }
 
 // Reducer function handling todo state transitions
@@ -34,7 +34,9 @@ function todoReducer(state: Todo[], action: Action): Todo[] {
             return state.filter(todo => todo.id !== action.id);
         case 'EDIT_TODO':
             return state.map(todo =>
-                todo.id === action.id ? { ...todo, text: action.newText } : todo
+                todo.id === action.payload.id
+                    ? { ...todo, text: action.payload.newText }
+                    : todo
             );
         case 'CLEAR_COMPLETED':
             return state.filter(todo => !todo.completed);
@@ -93,7 +95,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     }, [])
 
     const editTodo = useCallback((id: string, newText: string) => {
-        dispatch({ type: 'EDIT_TODO', id, newText })
+        dispatch({ type: 'EDIT_TODO', payload: { id, newText } })
     }, [])
 
     const clearCompleted = useCallback(() => {

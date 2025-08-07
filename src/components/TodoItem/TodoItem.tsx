@@ -1,92 +1,91 @@
-import React, { useState, useCallback } from "react"
-import styles from './TodoItem.module.css'
-import { type Todo } from "../../types"
-import { useTodoContext } from "../../contexts/TodoContext"
+// src/components/TodoItem/TodoItem.tsx
+import React, { useState, useEffect, useRef } from 'react';
+import { type Todo } from '../../types/index';
+import { useTodoContext } from '../../contexts/TodoContext';
+import styles from './TodoItem.module.css';
 
-interface TodoItemProps {
-    todo: Todo
+interface Props {
+  todo: Todo;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
-    // Grab actions from context
-    const { toggleTodo, deleteTodo, editTodo } = useTodoContext()
+const TodoItem: React.FC<Props> = ({ todo }) => {
+  const { toggleTodo, deleteTodo, editTodo } = useTodoContext();
 
-    // Local state for editing text
-    const [isEditing, setIsEditing] = useState(false)
-    const [editText, setEditText] = useState(todo.text)
+  // Local state to manage edit mode and input value
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(todo.text);
 
-    // Toggle completed status
-    const handleToggle = useCallback(() => {
-        toggleTodo(todo.id)
-    }, [todo.id, toggleTodo])
+  // Ref to focus input when editing
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    // Delete todo
-    const handleDelete = useCallback(() => {
-        deleteTodo(todo.id)
-    }, [todo.id, deleteTodo])
-
-    // Handle entering edit mode
-    const startEditing = () => {
-        setIsEditing(true)
-        setEditText(todo.text)
+  // Auto-focus input on edit mode
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
     }
+  }, [isEditing]);
 
-    // Handle cancel editing
-    const cancelEditing = () => {
-        setIsEditing(false);
-        setEditText(todo.text)
+  // Handle text change in input
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditText(e.target.value);
+  };
+
+  // Commit edit on blur or Enter
+  const handleSubmit = () => {
+    const trimmed = editText.trim();
+    if (trimmed.length > 0 && trimmed !== todo.text) {
+      editTodo(todo.id, trimmed); // Call context function to update
     }
+    setIsEditing(false); // Exit edit mode
+  };
 
-    // Save edited text
-    const saveEdit = () => {
-        const trimmed = editText.trim();
-        if (trimmed && trimmed !== todo.text) {
-            editTodo(todo.id, trimmed)
-        }
-        setIsEditing(false)
+  // Submit on Enter key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleSubmit();
+    if (e.key === 'Escape') {
+      setEditText(todo.text); // Reset value if user cancels
+      setIsEditing(false);
     }
+  };
 
-    // Handle enter key or blur on input
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            saveEdit();
-        } else if (e.key === 'Escape') {
-            cancelEditing();
-        }
-    }
+  return (
+    <li className={styles.todoItem}>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => toggleTodo(todo.id)}
+        aria-label={`Toggle ${todo.text}`}
+      />
 
-    return (
-        <li className={styles.TodoItem}>
-            <input 
-                type="checkbox"
-                checked={todo.completed}
-                onChange={handleToggle}
-            />
+      {isEditing ? (
+        <input
+          ref={inputRef}
+          className={styles.editInput}
+          value={editText}
+          onChange={handleChange}
+          onBlur={handleSubmit}
+          onKeyDown={handleKeyDown}
+          aria-label="Edit todo text"
+        />
+      ) : (
+        <span
+          className={`${styles.text} ${todo.completed ? styles.completed : ''}`}
+          onDoubleClick={() => setIsEditing(true)}
+        >
+          {todo.text}
+        </span>
+      )}
 
-            {isEditing ? (
-                <input 
-                    className={styles.editInput}
-                    type="text"
-                    value={editText}
-                    onChange={e => setEditText(e.target.value)}
-                    onBlur={saveEdit}
-                    onKeyDown={handleKeyDown}
-                    autoFocus
-                />
-            ) : (
-                <span
-                    onDoubleClick={startEditing}
-                    className={todo.completed ? styles.completed : ''}
-                >
-                    {todo.text}
-                </span>
-            )}
+      <div className={styles.actions}>
+        <button onClick={() => setIsEditing(true)} aria-label="Edit Todo">
+          ✏️
+        </button>
+        <button onClick={() => deleteTodo(todo.id)} aria-label="Delete Todo">
+          🗑️
+        </button>
+      </div>
+    </li>
+  );
+};
 
-            <button onClick={handleDelete} className={styles.deleteButton} aria-label="Delete todo">
-                &times;
-            </button>
-        </li>
-    )
-}
-
-export default TodoItem
+export default TodoItem;
