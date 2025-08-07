@@ -1,69 +1,49 @@
-# React + TypeScript + Vite
+# ToDo App — React + TypeScript + Vite + Context API
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Live Demo on Netlify
 
-Currently, two official plugins are available:
+[**View the live demo here (placeholder)**](https://your-netlify-demo-link.netlify.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Project Overview
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This is a ToDo application built with **React**, **TypeScript**, and **Vite**. It uses the **Context API** for state management to handle todos, filters, and theme switching. The app supports:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Adding, editing, toggling, and deleting todos
+- Filtering todos by all, active, or completed status
+- Light and dark theme toggling with persistence
+- State persistence via localStorage for todos and theme preference
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Setup (High Level)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Ensure Node.js and npm/yarn are installed**  
+2. **Create the project using Vite with React + TypeScript template**  
+3. **Install dependencies**  
+4. **Run the development server**  
+5. **Open the app in your browser at `http://localhost:3000`**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Usage Guide
+
+- **Add Todo:** Type your task in the input field and press **Add** or Enter key to add a new todo item.  
+- **Toggle Completion:** Click the checkbox next to a todo to mark it completed or active.  
+- **Edit Todo:** Double-click the todo text or click the pencil icon to edit; press Enter or click outside the input to save changes. Press Escape to cancel editing.  
+- **Delete Todo:** Click the trash icon to remove the todo item permanently.  
+- **Filter Todos:** Use the filter buttons (**All**, **Active**, **Completed**) below the list to control which todos are displayed.  
+- **Theme Switch:** Use the theme toggle button in the header to switch between light and dark themes. Your choice will be saved and remembered on next visits.  
+
+---
+
+## Project Reflection
+
+This project highlights effective use of React’s Context API combined with TypeScript for robust and scalable state management. The use of `useReducer` for todo operations ensures clear and maintainable updates, while `useState` handles simpler UI states such as filters and themes.
+
+Component modularization and CSS Modules promote reusable, scoped styles and a clean separation of concerns. Persisting state in localStorage improves user experience by preserving data across sessions.
+
+The theme toggle implementation demonstrates UI responsiveness and accessibility with smooth transitions. The project also showcases how to optimize React context usage with memoization hooks (`useMemo` and `useCallback`) to prevent unnecessary re-renders, essential for larger or more complex apps.
+
+Overall, this project reflects a well-structured React + TypeScript approach suitable for production-level Todo applications or similar CRUD-based projects.
