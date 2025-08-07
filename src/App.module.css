@@ -1,0 +1,31 @@
+/* App.module.css */
+
+/* Sets up smooth theme transitions across the app */
+.appContainer {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh; /* full viewport height */
+  padding: 2rem; /* gives breathing room inside the app */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Light theme variables */
+.light {
+  background-color: #f9f9f9; /* soft background for light mode */
+  color: #1a1a1a; /* dark readable text */
+}
+
+/* Dark theme variables */
+.dark {
+  background-color: #1e1e1e; /* dark background */
+  color: #f5f5f5; /* light text for readability */
+}
+
+/* Main app heading */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}

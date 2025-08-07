@@ -1,0 +1,20 @@
+/* ThemeToggleButton.module.css */
+
+/* Wrapper around the toggle switch */
+.toggleButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for theme switch */
+.toggleButton:hover {
+  background-color: #555;
+}
