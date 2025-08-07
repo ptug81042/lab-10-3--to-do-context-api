@@ -14,6 +14,7 @@ const FilterButtons: React.FC = () => {
                 <button
                     key={f}
                     className={`${styles.button} ${filter === f ? styles.active : ''}`}
+                    onClick={() => setFilter(f)}
                     aria-pressed={filter === f}
                 >
                     {f.charAt(0).toUpperCase() + f.slice(1)}
