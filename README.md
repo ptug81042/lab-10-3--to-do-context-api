@@ -2,7 +2,8 @@
 
 ## Live Demo on Netlify
 
-[**View the live demo here (placeholder)**](https://your-netlify-demo-link.netlify.app)
+[**View the live demo here**](https://parsa-context-todo.netlify.app/)
+
 
 ---
 
